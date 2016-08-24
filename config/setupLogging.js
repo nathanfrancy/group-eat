@@ -11,7 +11,7 @@ if (env.config.logging.console) {
 if (env.config.logging.rolling) {
     appenders.push({
         type: "RollingFileAppender",
-        file: "pro-connection.log"
+        file: env.config.logging.rollingFile
     });
 }
 

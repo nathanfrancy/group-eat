@@ -7,8 +7,8 @@ let environmentSetupProperties = {
         logging: {
             console: true,
             rolling: true,
-            rollingFile: 'appname.log',
-            topLogContext: 'appname',
+            rollingFile: 'group-eat.log',
+            topLogContext: 'ge',
             level: 'ALL'
         }
     }
