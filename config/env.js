@@ -1,3 +1,5 @@
+let safetext = require('safetext');
+
 let environmentSetupProperties = {
 
     dev: {
@@ -32,6 +34,7 @@ module.exports = (function() {
         env = 'dev';
 
     return {
+        safestore: safetext.getContents('pw'),
         host: hostname,
         env: env,
         config: environmentSetupProperties[env]
