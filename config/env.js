@@ -4,7 +4,7 @@ let environmentSetupProperties = {
 
     dev: {
         appSettings: {
-            port: 8000
+            port: 8010
         },
         logging: {
             console: true,

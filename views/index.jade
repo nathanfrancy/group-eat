@@ -1,18 +1,10 @@
 extends layout
 
 block content
-  h1 Group Eat
-  p Helping your indecisive group of friends pick a place to eat.
-
   div#new-wrapper
-    label Name
-    br
+    h1 Pick a f*cking place to eat.
+    label Enter a name for your group
     input(v-model="name")
-    br
-    label Optionally, enter a passcode
-    br
-    input(v-model="code")
-    br
-    button(v-on:click="createPoll") Create
+    button.btn(v-on:click="createPoll") Create
 
   script(type='text/javascript', src='/javascript/index.js')

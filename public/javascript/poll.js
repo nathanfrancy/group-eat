@@ -1,7 +1,8 @@
 var vm = new Vue({
     el: '#poll-wrapper',
     data: {
-        poll: poll
+        poll: poll,
+        newOption: ''
     },
     methods: {
         vote: function($index) {
@@ -32,6 +33,23 @@ var vm = new Vue({
                     },
                     200: function(res) {
                         that.poll = res;
+                    }
+                }
+            });
+        },
+        submitNewOption: function() {
+            var that = this;
+            $.ajax({
+                url: "/poll/" + this.poll.id + "/newOption/" + that.newOption,
+                type: "post",
+                dataType: "json",
+                statusCode: {
+                    400: function() {
+                        console.error('Something went wrong in creation.');
+                    },
+                    200: function(res) {
+                        that.refreshPoll();
+                        that.newOption = '';
                     }
                 }
             });

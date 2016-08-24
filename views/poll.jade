@@ -3,6 +3,9 @@ extends layout
 block content
     div#poll-wrapper
         h1= poll.name
+        input(v-model="newOption", placeholder="Enter a new option here")
+        button.btn(v-on:click="submitNewOption") Submit
+        h2 Results
         ul
             li(v-for="option in poll.options", v-on:click="vote($index)")
                 = "{{ option.text + ' - ' + option.votes.length + ' votes' }}"

@@ -98,8 +98,23 @@ function insertVote(vote) {
     return new Promise((resolve, reject) => {
         databasePool.getConnection((err, connection) => {
             if (err) reject(err);
-            else connection.query('INSERT INTO vote (id, ip, poll_id, option_id, timestamp) VALUES (?, ?, ?, ?, ?)',
-                [ vote.id, vote.ip, vote.poll_id, vote.option_id, vote.timestamp ],
+            else connection.query('INSERT INTO vote (id, ip, poll_id, option_id, timestamp) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE option_id = ?',
+                [ vote.id, vote.ip, vote.poll_id, vote.option_id, vote.timestamp, vote.option_id ],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve();
+                    connection.release();
+                });
+        });
+    });
+}
+
+function insertPollOption(pollOption) {
+    return new Promise((resolve, reject) => {
+        databasePool.getConnection((err, connection) => {
+            if (err) reject(err);
+            else connection.query('INSERT INTO poll_option (id, text, poll_id) VALUES (?, ?, ?)',
+                [ pollOption.id, pollOption.text, pollOption.poll_id ],
                 (err, rows) => {
                     if (err) reject(err);
                     else resolve();
@@ -133,7 +148,8 @@ module.exports = {
     },
 
     pollOptions: {
-        getForPoll: getOptionsForPoll
+        getForPoll: getOptionsForPoll,
+        insert: insertPollOption
     },
 
     votes: {

@@ -43,6 +43,21 @@ router.post('/poll/:pollId/vote/:optionId', function(req, res, next) {
   });
 });
 
+router.post('/poll/:pollId/newOption/:option', function(req, res, next) {
+  var pollOption = {
+    id: null,
+    text: req.params.option,
+    poll_id: req.params.pollId
+  };
+
+  dbService.pollOptions.insert(objectHelper.convertToRaw.pollOption(pollOption)).then(function() {
+    res.status(200).send();
+  }).catch(function(err) {
+    logger.error(err.message);
+    res.status(400).send();
+  });
+});
+
 router.get('/poll/:pollId', function(req, res, next) {
   dbService.poll.getPopulated(req.params.pollId).then(function(poll) {
     res.render('poll', {
