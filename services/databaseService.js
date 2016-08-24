@@ -94,6 +94,21 @@ function getVotesForPoll(poll_id) {
     });
 }
 
+function insertVote(vote) {
+    return new Promise((resolve, reject) => {
+        databasePool.getConnection((err, connection) => {
+            if (err) reject(err);
+            else connection.query('INSERT INTO vote (id, ip, poll_id, option_id, timestamp) VALUES (?, ?, ?, ?, ?)',
+                [ vote.id, vote.ip, vote.poll_id, vote.option_id, vote.timestamp ],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve();
+                    connection.release();
+                });
+        });
+    });
+}
+
 function getPopulatedPoll(id) {
     let $poll = null;
     return getPollById(id).then(function(poll) {
@@ -122,7 +137,8 @@ module.exports = {
     },
 
     votes: {
-        getForPoll: getVotesForPoll
+        getForPoll: getVotesForPoll,
+        insert: insertVote
     }
 
 };

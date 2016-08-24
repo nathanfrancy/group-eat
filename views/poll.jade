@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    div#poll-wrapper
+        h1= poll.name
+        ul
+            li(v-for="option in poll.options", v-on:click="vote($index)")
+                = "{{ option.text + ' - ' + option.votes.length + ' votes' }}"
+    script.
+        var poll = !{JSON.stringify(poll)};
+    script(type='text/javascript', src='/javascript/poll.js')

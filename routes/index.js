@@ -25,12 +25,43 @@ router.post('/poll/create', function(req, res, next) {
   });
 });
 
+router.post('/poll/:pollId/vote/:optionId', function(req, res, next) {
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  var vote = {
+    id: null,
+    ip: ip,
+    poll_id: req.params.pollId,
+    option_id: req.params.optionId,
+    timestamp: new Date()
+  };
+
+  dbService.votes.insert(objectHelper.convertToRaw.vote(vote)).then(function() {
+    res.status(200).send();
+  }).catch(function(err) {
+    logger.error(err.message);
+    res.status(400).send();
+  });
+});
+
 router.get('/poll/:pollId', function(req, res, next) {
   dbService.poll.getPopulated(req.params.pollId).then(function(poll) {
-    res.status(200).json(poll);
+    res.render('poll', {
+      poll: poll
+    });
   }).catch(function(err) {
     logger.warn(err.message);
-    res.status(400).json("Error getting this poll.");
+    res.redirect('/');
+  });
+});
+
+router.get('/api/poll/:pollId', function(req, res, next) {
+  dbService.poll.getPopulated(req.params.pollId).then(function(poll) {
+    res.json(poll);
+  }).catch(function(err) {
+    logger.warn(err.message);
+    res.status(400).json({
+      error: err.message
+    })
   });
 });
 
