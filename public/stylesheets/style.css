@@ -6,7 +6,11 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('/images/weather.png');
+  background-image: url('/images/food.png');
+}
+
+#results {
+  margin-top: 32px;
 }
 
 #new-wrapper, #poll-wrapper {
@@ -33,6 +37,7 @@ input {
   font-size: 18px;
   padding: 10px;
   margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.12);
 }
 
 input:hover {
@@ -61,4 +66,27 @@ label {
 
 .btn:hover {
   background-color: #f1f1f1;
+}
+
+.option {
+  margin-bottom: 12px;
+}
+
+.option .name {
+  margin-bottom: 4px;
+}
+
+.option .name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.option .votes {
+  float: right;
+}
+
+.option .bar {
+  background-color: black;
+  height: 4px;
+  margin-top: 4px;
 }
