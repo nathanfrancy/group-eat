@@ -26,10 +26,13 @@ router.post('/poll/create', function(req, res, next) {
 });
 
 router.post('/poll/:pollId/vote/:optionId', function(req, res, next) {
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  if (!req.cookies.uid) {
+    var token = require('crypto').randomBytes(64).toString('hex');
+  }
+
   var vote = {
     id: null,
-    ip: ip,
+    cookieid: req.cookies.uid || token,
     poll_id: req.params.pollId,
     option_id: req.params.optionId,
     timestamp: new Date()

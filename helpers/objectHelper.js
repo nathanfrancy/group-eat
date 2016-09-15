@@ -23,7 +23,7 @@ function convertRawToPollOption(data) {
 function convertRawToVote(data) {
     return new Vote(
         data.id,
-        data.ip,
+        data.cookieid,
         data.poll_id,
         data.option_id,
         data.timestamp

@@ -8,8 +8,8 @@ var bodyParser = require('body-parser');
 var comb = require('comb');
 var http = require('http');
 
-var logger = comb.logger('polar.app');
-logger.info(`Polar starting up in '${env.env}' mode.`);
+var logger = comb.logger('ge.app');
+logger.info(`group-eat starting up in '${env.env}' mode.`);
 
 // Import middleware and routing files.
 var mw = require('./routes/middleware');
@@ -26,6 +26,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function(req, res, next) {
+  if (!req.cookies.uid) {
+    require('crypto').randomBytes(48, function(err, buffer) {
+      res.cookie('uid', buffer.toString('hex'), { maxAge: 900000, httpOnly: true });
+      next();
+    });
+  }
+  else next();
+});
 
 // Add routes to express configuration.
 app.use('/', routes);
